@@ -10,12 +10,13 @@ def postgresql_connect():
     sqluser = 'postgres'
     sqlpass = 'KAPOONman2535!'
     dbname = 'prive-datastore'
-    schema_name = 'someschema'
-    host =  '171.100.79.72' #'localhost' #
-
-    query_schema = 'SET search_path to ' + schema_name + ';'
-    # connect to the database
-    con = psycopg2.connect(dbname=dbname, user=sqluser, password=sqlpass, host=host)
+    
+    try:
+        host =  '171.100.79.72' #
+        con = psycopg2.connect(dbname=dbname, user=sqluser, password=sqlpass, host=host)
+    except:
+        host =  'localhost' 
+        con = psycopg2.connect(dbname=dbname, user=sqluser, password=sqlpass, host=host)
     return con
   
 def insert_df2postgresql(conn, df, table):
