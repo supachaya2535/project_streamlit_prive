@@ -19,8 +19,10 @@ def postgresql_connect():
         host =  'localhost' 
         con = psycopg2.connect(dbname=dbname, user=sqluser, password=sqlpass, host=host)
     except:
+        st.warning('172.20.10.13')
         host =  '172.20.10.13' 
         con = psycopg2.connect(dbname=dbname, user=sqluser, password=sqlpass, host=host)
+        st.warning('172.20.10.13 complete')
     return con
   
 def insert_df2postgresql(conn, df, table):
