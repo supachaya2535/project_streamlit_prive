@@ -11,7 +11,7 @@ def postgresql_connect():
     sqlpass = 'KAPOONman2535!'
     dbname = 'prive-datastore'
     schema_name = 'someschema'
-    host =  'localhost' #'171.100.79.72'
+    host =  '171.100.79.72' #'localhost' #
 
     query_schema = 'SET search_path to ' + schema_name + ';'
     # connect to the database
