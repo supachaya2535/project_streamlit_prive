@@ -56,6 +56,6 @@ def hex_format(r,g,b):
 st.set_page_config(layout="wide")
 
 st.title('รายการบริการ')
-# customer_record_df = load_customer_record_data()
+customer_record_df = load_customer_record_data()
 
-# st.dataframe(customer_record_df,height=1000)
+st.dataframe(customer_record_df,height=1000)
