@@ -1,2 +1,2 @@
-psycopg2==2.9.1
-streamlit==1.22.0
+psycopg2
+streamlit
