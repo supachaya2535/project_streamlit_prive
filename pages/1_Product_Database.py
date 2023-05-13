@@ -1,9 +1,13 @@
 import streamlit as st
 import pandas as pd
+import os
 
 import psycopg2
 import psycopg2.extras as extras
 
+from datetime import date
+from datetime import datetime
+from dateutil.relativedelta import relativedelta
 
 def postgresql_connect():
     # specify user/password/where the database is
@@ -12,10 +16,10 @@ def postgresql_connect():
     dbname = 'prive-datastore'
     
     try:
-        host =  '171.100.79.72' #
+        host =  'localhost' 
         con = psycopg2.connect(dbname=dbname, user=sqluser, password=sqlpass, host=host)
     except:
-        host =  'localhost' 
+        host =  '172.20.10.13' 
         con = psycopg2.connect(dbname=dbname, user=sqluser, password=sqlpass, host=host)
     return con
   
@@ -41,11 +45,22 @@ def insert_df2postgresql(conn, df, table):
 
 #@st.cache_data 
 def load_customer_record_data():
-    con = postgresql_connect()
-    query = """select  * 
-                from product_category
-                """
-    df = pd.read_sql_query(query,con)
+    today = date.today() # date(2023,5,12) #
+    path = f"data_cach/product_category_{str(today)}.csv"
+    try:
+        con = postgresql_connect()
+        query = """select  * 
+                    from product_category
+                    """
+        df = pd.read_sql_query(query,con)
+        
+        isExist = os.path.exists(path)
+        if not isExist:
+            df.to_csv(path,header = True,index = False)
+        
+    except:
+        st.write('Load data from cach ....')
+        df = pd.read_csv(path)
     return df
 
 
