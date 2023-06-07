@@ -5,9 +5,12 @@ import os
 import psycopg2
 import psycopg2.extras as extras
 
+import time
 from datetime import date
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
+
+from utils_prive import load_product_category_data, creat_new_directory
 
 def postgresql_connect():
     # specify user/password/where the database is
@@ -44,26 +47,15 @@ def insert_df2postgresql(conn, df, table):
     print("the dataframe is inserted")
     cursor.close()
 
-
-#@st.cache_data 
-def load_customer_record_data():
-    today = date.today() # date(2023,5,12) #
-    path = f"data_cach/product_category_{str(today)}.csv"
+def get_product_category():
+    # Product
     try:
-        con = postgresql_connect()
-        query = """select  * 
-                    from product_category
-                    """
-        df = pd.read_sql_query(query,con)
-        
-        isExist = os.path.exists(path)
-        if not isExist:
-            df.to_csv(path,header = True,index = False)
-        
+        product_category_df = pd.read_csv(f"./database/product_category/product_category_{date.today()}_data.csv")
+        st.success('Load from lasted updated file')
     except:
-        st.write('Load data from cach ....')
-        df = pd.read_csv(path)
-    return df
+        product_category_df = pd.read_csv(f"./database/product_category/product_category_data.csv")
+        st.warning('No updated file today...')
+    return product_category_df.drop_duplicates()
 
 
 def hex_format(r,g,b):
@@ -73,7 +65,17 @@ def hex_format(r,g,b):
 ###  Main
 st.set_page_config(layout="wide")
 
-st.title('รายการบริการ')
-customer_record_df = load_customer_record_data()
+st.title('รายการบริการ (แก้ไขได้)')
 
-st.dataframe(customer_record_df,height=1000)
+st.write(time.strftime('%X - %x'))
+# customer_record_df = load_customer_profile_data()
+# creat_new_directory("./database/customer_profile/")
+
+product_category_df = get_product_category()
+
+edited_df = st.experimental_data_editor(product_category_df.sort_values('start_dt',ascending=False), height=500, width=800)
+if st.button('บันทึกการเปลี่ยนแปลง'):
+    st.balloons()
+    edited_df.to_csv(f"./database/product_category/product_category_{date.today()}_data.csv",header = True,index = False)
+    edited_df.to_csv(f"./database/product_category/product_category_data.csv",header = True,index = False)
+

@@ -7,8 +7,6 @@ st.set_page_config(
 
 st.write("# Welcome to PRIVE 👋")
 
-st.sidebar.success("Select a page above.")
-
 st.markdown(
     """
     created by Supachaya Prathan
