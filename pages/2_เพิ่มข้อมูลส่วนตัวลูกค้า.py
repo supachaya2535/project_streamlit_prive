@@ -142,8 +142,8 @@ st.write(time.strftime('%X - %x'))
 customer_profile_df = get_customer_profile()
 
 with st.container():
-    edited_df = st.experimental_data_editor(customer_profile_df.sort_values('hn',ascending=False), height=1000)
+    edited_df = st.data_editor(customer_profile_df.sort_values('hn',ascending=False), height=1000)
     if st.button('บันทึกการเปลี่ยนแปลง'):
         edited_df.to_csv(f"./database/customer_profile/customer_profile_{date.today().strftime('%Y-%m')}_data.csv",header = True,index = False)
-        # edited_df.to_csv(f"./database/customer_profile/customer_profile_data.csv",header = True,index = False)
+        edited_df.to_csv(f"./database/customer_profile/customer_profile_data.csv",header = True,index = False)
         st.balloons()

@@ -86,16 +86,16 @@ with st.container():
         item_df = pd.DataFrame.from_dict(item,orient='index').T
         product_category_df  = pd.concat([product_category_df,item_df],axis=0, ignore_index=True)
         product_category_df.to_csv(f"./database/product_category/product_category_{date.today().strftime('%Y-%m')}_data.csv",header = True,index = False)
-        # product_category_df.to_csv(f"./database/product_category/product_category_data.csv",header = True,index = False)
+        product_category_df.to_csv(f"./database/product_category/product_category_data.csv",header = True,index = False)
         st.balloons()
 
 with st.container():
     st.subheader(f'รายการบริการ (แก้ไขได้)')
     st.write(time.strftime('%X - %x'))
 
-    edited_df = st.experimental_data_editor(product_category_df.sort_values('start_dt',ascending=False), height=500, width=800)
+    edited_df = st.data_editor(product_category_df.sort_values('start_dt',ascending=False), height=500, width=800)
     if st.button('บันทึกการเปลี่ยนแปลง'):
         st.balloons()
         edited_df.to_csv(f"./database/product_category/product_category_{date.today().strftime('%Y-%m')}_data.csv",header = True,index = False)
-        # edited_df.to_csv(f"./database/product_category/product_category_data.csv",header = True,index = False)
+        edited_df.to_csv(f"./database/product_category/product_category_data.csv",header = True,index = False)
 
