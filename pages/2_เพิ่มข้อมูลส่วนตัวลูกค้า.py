@@ -15,7 +15,7 @@ def hex_format(r,g,b):
 def get_customer_profile():
     # Customer Profile Load
     try:
-        customer_profile_df = pd.read_csv(f"./database/customer_profile/customer_profile_{date.today()}_data.csv")
+        customer_profile_df = pd.read_csv(f"./database/customer_profile/customer_profile_{date.today().strftime('%Y-%m')}_data.csv")
         st.success('Load from lasted updated file')
     except:
         customer_profile_df = pd.read_csv(f"./database/customer_profile/customer_profile_data.csv")
@@ -37,9 +37,15 @@ customer_profile_df = get_customer_profile()
 
 st.dataframe(customer_profile_df)
 
-max_hn = int(customer_profile_df['hn'].max())+1
+max_hn = int(customer_profile_df['hn'].max())
+
 with st.container():
-    st.subheader(f'หมายเลข HN สำหรับลูกค้าใหม่ : {str(max_hn)}')
+    st.subheader(f'กรอกข้อมูลสำหรับลูกค้าใหม่')
+    col1 ,col2 = st.columns(2)
+    with col1:
+        st.text(f'หมายเลข HN สูงสุดในฐานข้อมูลปัจจุบัน : {max_hn}')
+    
+        hn_id = st.text_input('หมายเลข HN สำหรับลูกค้าใหม่', '')
     
     col11,col12,col13 = st.columns([0.4,0.4,0.2])
     with col11:
@@ -53,13 +59,13 @@ with st.container():
     with col21:
         hn_dob = st.date_input("วันเกิด (ค.ศ.)", date(1992, 7, 6))
     with col22: 
-        hn_tel = st.text_input('เบอร์โทร (*)', '')
+        hn_tel = st.text_input('เบอร์โทร', '')
     with col23:
-        hn_email = st.text_input("e-mail", "example@mail.com")
+        hn_email = st.text_input("e-mail", "")
 
 st.divider()
 with st.container():
-    st.subheader(f'ที่อยู่ลูกค้าใหม่ :{str(max_hn)}')
+    st.subheader(f'ที่อยู่ลูกค้าใหม่ :{str(hn_id)}')
     col1, col2  = st.columns([0.2,0.5])  
     with col1:
         hn_housenum = st.text_input('บ้านเลขที่', '-')
@@ -86,7 +92,7 @@ summa_flag = False
 hn_row = {}
 if st.button('ยืนยันเพิ่มข้อมูลลูกค้า'):
     st.balloons()
-    if(hn_name == '')|(hn_last_name == '')|(hn_tel== ''):
+    if(hn_name == '')|(hn_last_name == ''):
         st.warning('Please fill in required feild [ ชื่อ, นามสกุล, เบอร์โทร]')
     else:
         hn_row = {
@@ -108,7 +114,7 @@ if st.button('ยืนยันเพิ่มข้อมูลลูกค้
             'application_dt': date.today()
         }
         
-        st.markdown(f"หมายเลข HN : **:green[{max_hn}]**")
+        st.markdown(f"หมายเลข HN : **:green[{hn_id}]**")
         st.markdown(f'ชื่อ :green[{hn_name}]  \tนามสกุล  :green[{hn_last_name}]')    
         st.markdown(f'เพศ :green[{hn_sex}]  วันเกิด **:green[{hn_dob}]**')
         st.markdown(f'เบอร์โทร : :green[{hn_tel}]  email : :green[{hn_email}]')
@@ -120,18 +126,16 @@ if st.button('ยืนยันเพิ่มข้อมูลลูกค้
         
 
         done_flag = True
-        st.balloons()
-        st.write(hn_row)
+        
         hn_df = pd.DataFrame.from_dict(hn_row,orient='index').T
-
         customer_profile_df = pd.concat([customer_profile_df,hn_df],axis=0, ignore_index=True)
         st.dataframe(customer_profile_df.sort_values('hn',ascending=False))
-        customer_profile_df.to_csv(f"./database/customer_profile/customer_profile_{date.today()}_data.csv",header = True,index = False)
-        customer_profile_df.to_csv(f"./database/customer_profile/customer_profile_data.csv",header = True,index = False)
+        customer_profile_df.to_csv(f"./database/customer_profile/customer_profile_{date.today().strftime('%Y-%m')}_data.csv",header = True,index = False)
+        # customer_profile_df.to_csv(f"./database/customer_profile/customer_profile_data.csv",header = True,index = False)
         st.success("เพิ่มข้อมูลสำเร็จ")
+        st.balloons()
         done_flag = False
                         
-
 st.divider()
 st.header('ลูกค้าทั้งหมด (แก้ไขได้)')
 st.write(time.strftime('%X - %x'))
@@ -140,5 +144,6 @@ customer_profile_df = get_customer_profile()
 with st.container():
     edited_df = st.experimental_data_editor(customer_profile_df.sort_values('hn',ascending=False), height=1000)
     if st.button('บันทึกการเปลี่ยนแปลง'):
-        edited_df.to_csv(f"./database/customer_profile/customer_profile_{date.today()}_data.csv",header = True,index = False)
-        edited_df.to_csv(f"./database/customer_profile/customer_profile_data.csv",header = True,index = False)
+        edited_df.to_csv(f"./database/customer_profile/customer_profile_{date.today().strftime('%Y-%m')}_data.csv",header = True,index = False)
+        # edited_df.to_csv(f"./database/customer_profile/customer_profile_data.csv",header = True,index = False)
+        st.balloons()
