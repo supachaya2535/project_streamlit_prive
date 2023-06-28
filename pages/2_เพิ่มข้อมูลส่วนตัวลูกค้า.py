@@ -130,8 +130,8 @@ if st.button('ยืนยันเพิ่มข้อมูลลูกค้
         hn_df = pd.DataFrame.from_dict(hn_row,orient='index').T
         customer_profile_df = pd.concat([customer_profile_df,hn_df],axis=0, ignore_index=True)
         st.dataframe(customer_profile_df.sort_values('hn',ascending=False))
-        customer_profile_df.to_csv(f"./database/customer_profile/customer_profile_{date.today().strftime('%Y-%m')}_data.csv",header = True,index = False)
-        # customer_profile_df.to_csv(f"./database/customer_profile/customer_profile_data.csv",header = True,index = False)
+        customer_profile_df.to_csv(f"./database/customer_profile/customer_profile_{date.today().strftime('%Y-%m')}_data.csv",header = True,index = False, encoding="utf-8-sig")
+        customer_profile_df.to_csv(f"./database/customer_profile/customer_profile_data.csv",header = True,index = False, encoding="utf-8-sig")
         st.success("เพิ่มข้อมูลสำเร็จ")
         st.balloons()
         done_flag = False
@@ -144,6 +144,6 @@ customer_profile_df = get_customer_profile()
 with st.container():
     edited_df = st.data_editor(customer_profile_df.sort_values('hn',ascending=False), height=1000)
     if st.button('บันทึกการเปลี่ยนแปลง'):
-        edited_df.to_csv(f"./database/customer_profile/customer_profile_{date.today().strftime('%Y-%m')}_data.csv",header = True,index = False)
-        edited_df.to_csv(f"./database/customer_profile/customer_profile_data.csv",header = True,index = False)
+        edited_df.to_csv(f"./database/customer_profile/customer_profile_{date.today().strftime('%Y-%m')}_data.csv",header = True,index = False, encoding="utf-8-sig")
+        edited_df.to_csv(f"./database/customer_profile/customer_profile_data.csv",header = True,index = False, encoding="utf-8-sig")
         st.balloons()

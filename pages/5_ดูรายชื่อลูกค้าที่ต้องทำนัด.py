@@ -81,6 +81,6 @@ st.title('รายชื่อลูกค้าที่ต้องทำน�
 edited_df = st.data_editor(next_df.sort_values('วันที่นัดครั้งถัดไป',ascending=False), height=500,width=1100)
 if st.button('บันทึกการเปลี่ยนแปลง'):
     edited_df = rename_to_save(edited_df)
-    edited_df.to_csv(f"./database/customer_used_record/customer_used_record_{date.today().strftime('%Y-%m')}_data.csv",header = True,index = False)
-    edited_df.to_csv(f"./database/customer_used_record/customer_used_record_data.csv",header = True,index = False)
+    edited_df.to_csv(f"./database/customer_used_record/customer_used_record_{date.today().strftime('%Y-%m')}_data.csv",header = True,index = False, encoding="utf-8-sig")
+    edited_df.to_csv(f"./database/customer_used_record/customer_used_record_data.csv",header = True,index = False,encoding="utf-8-sig")
 

@@ -127,8 +127,8 @@ col = st.columns(3)[1]  # use an odd number and pick the middle element
 if col.button('ยืนยันการเพิ่มข้อมูลลูกค้า'):
     customer_product_record_df = pd.concat([customer_product_record_df,pd.DataFrame.from_dict(service_row,orient='index').T], axis=0, ignore_index=True)
     customer_product_record_df.drop_duplicates(inplace = True)
-    customer_product_record_df.to_csv(f"./database/customer_product_record/customer_product_record_{date.today().strftime('%Y-%m')}_data.csv",header = True,index = False)
-    customer_product_record_df.to_csv(f"./database/customer_product_record/customer_product_record_data.csv",header = True,index = False)
+    customer_product_record_df.to_csv(f"./database/customer_product_record/customer_product_record_{date.today().strftime('%Y-%m')}_data.csv",header = True,index = False, encoding="utf-8-sig")
+    customer_product_record_df.to_csv(f"./database/customer_product_record/customer_product_record_data.csv",header = True,index = False, encoding="utf-8-sig")
     st.success('การเพิ่มข้อมูลเสร็จสมบูรณ์')
     st.balloons()
 
@@ -137,8 +137,8 @@ st.title('รายการการซื้อบริการทั้ง�
 st.write(time.strftime('%X - %x'))
 edited_df = st.data_editor(customer_product_record_df.sort_values('buy_dt',ascending=False), height=500,width=1100)
 if st.button('บันทึกการเปลี่ยนแปลง'):
-    edited_df.to_csv(f"./database/customer_product_record/customer_product_record_{date.today().strftime('%Y-%m')}_data.csv",header = True,index = False)
-    edited_df.to_csv(f"./database/customer_product_record/customer_product_record_data.csv",header = True,index = False)
+    edited_df.to_csv(f"./database/customer_product_record/customer_product_record_{date.today().strftime('%Y-%m')}_data.csv",header = True,index = False,encoding="utf-8-sig")
+    edited_df.to_csv(f"./database/customer_product_record/customer_product_record_data.csv",header = True,index = False,encoding="utf-8-sig"
     st.success('บึนทึกเสร็จสมบูรณ์')
     st.balloons()
    

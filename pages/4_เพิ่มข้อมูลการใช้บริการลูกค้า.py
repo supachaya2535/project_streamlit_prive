@@ -95,8 +95,8 @@ def display_service( item_name, used_couse_num):
 def save_new_used_record2db(used_row):
     customer_used_record_df = get_customer_used_record()
     customer_used_record_df = customer_used_record_df.append(used_row,ignore_index=True).sort_values('next_date',ascending=False)
-    customer_used_record_df.to_csv(f"./database/customer_used_record/customer_used_record_{date.today()}_data.csv",header = True,index = False)
-    customer_used_record_df.to_csv(f"./database/customer_used_record/customer_used_record_data.csv",header = True,index = False)
+    customer_used_record_df.to_csv(f"./database/customer_used_record/customer_used_record_{date.today()}_data.csv",header = True,index = False,encoding="utf-8-sig")
+    customer_used_record_df.to_csv(f"./database/customer_used_record/customer_used_record_data.csv",header = True,index = False,encoding="utf-8-sig")
         
 def add_used_record2db():
     customer_product_record_df = get_customer_product_record()
@@ -203,8 +203,8 @@ def add_used_record2db():
         if item_name != None :
             st.dataframe(pd.DataFrame.from_dict(used_row,orient='index').T)
             customer_used_record_df = pd.concat([customer_used_record_df,pd.DataFrame.from_dict(used_row,orient='index').T],axis=0, ignore_index=True)
-            customer_used_record_df.to_csv(f"./database/customer_used_record/customer_used_record_{date.today().strftime('%Y-%m')}_data.csv",header = True,index = False)
-            customer_used_record_df.to_csv(f"./database/customer_used_record/customer_used_record_data.csv",header = True,index = False)
+            customer_used_record_df.to_csv(f"./database/customer_used_record/customer_used_record_{date.today().strftime('%Y-%m')}_data.csv",header = True,index = False,encoding="utf-8-sig")
+            customer_used_record_df.to_csv(f"./database/customer_used_record/customer_used_record_data.csv",header = True,index = False,encoding="utf-8-sig")
             st.balloons()
         else:
             st.write('ข้อมูลไม่ครบถ้วน')
@@ -218,8 +218,8 @@ def add_used_record2db():
         edited_df = st.data_editor(customer_used_record_df.sort_values('วันที่นัดครั้งถัดไป',ascending=False), height=1000,width=1100)
         if st.button('บันทึกการเปลี่ยนแปลง'):
             edited_df = rename_to_save(edited_df)
-            edited_df.to_csv(f"./database/customer_used_record/customer_used_record_{date.today().strftime('%Y-%m')}_data.csv",header = True,index = False)
-            edited_df.to_csv(f"./database/customer_used_record/customer_used_record_data.csv",header = True,index = False)
+            edited_df.to_csv(f"./database/customer_used_record/customer_used_record_{date.today().strftime('%Y-%m')}_data.csv",header = True,index = False,encoding="utf-8-sig")
+            edited_df.to_csv(f"./database/customer_used_record/customer_used_record_data.csv",header = True,index = False,encoding="utf-8-sig")
 
     return 1
 
