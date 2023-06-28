@@ -1,4 +1,4 @@
-hn,name,last_name,tel,email,dob,house_num,building,road,sub_district,district,province,zip_code,status,application_dt,sex
+﻿hn,name,last_name,tel,email,dob,house_num,building,road,sub_district,district,province,zip_code,status,application_dt,sex
 57001,นันทิยา,ดวงตา,091-050-0610,oolynoe.nn288@gmail.com,12-Apr-33,8/65-72,,สุนทรโกษา,คลองเตย,คลองเตย,กรุงเทพ,10110,from Excel file,1/1/2022,
 57002,นงพนา,พยัคฆาธรรม,095-474-6974,-,20-Apr-33,3,,นราธิวาส 18,ช่องนนทรี,ยานนาวา,กรุงเทพ,10120,from Excel file,1/1/2022,
 57003,รศยุพา (K.ต้อม),มีคะเสน,081-644-7029,rosyupa@set.or.th,20-Apr-33,51/229,,พหลโยธิน,หลักหก,เมือง,ปทุมธานี,12000,from Excel file,1/1/2022,
@@ -34,3 +34,5 @@ hn,name,last_name,tel,email,dob,house_num,building,road,sub_district,district,pr
 57033,ไปรยา(คุณเอื้อย),ลาภโรจน์กิจ,081-898-0893,,13-Sep-22,1487,,เพชรเกษม,,หาดใหญ่,สงขลา,90110,from Excel file,1/1/2022,
 57034,kk,jj,0,example@mail.com,6/7/1992,xx/xx,-,-,-,-,-,-,test,26/5/2023,
 57034,สุภชายา,ประธาน,,,1992-07-06,-,-,-,-,-,-,-,test,2023-06-25,หญิง
+57034,gg,gg,,,1992-07-06,-,-,-,-,-,-,-,test,2023-06-28,ชาย
+9999999,gg,gg,,,1992-07-06,-,-,-,-,-,-,-,test,2023-06-28,ชาย
