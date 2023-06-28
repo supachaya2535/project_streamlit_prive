@@ -96,7 +96,7 @@ if st.button('ยืนยันเพิ่มข้อมูลลูกค้
         st.warning('Please fill in required feild [ ชื่อ, นามสกุล, เบอร์โทร]')
     else:
         hn_row = {
-            'hn'    : max_hn,
+            'hn'    : hn_id,
             'name' : hn_name,
             'last_name' : hn_last_name,
             'sex': hn_sex,
