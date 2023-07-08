@@ -1,2 +1,12 @@
-psycopg2-binary
-streamlit
+alembic==1.11.1
+numpy==1.24.3
+pandas==2.0.2
+python-dotenv==1.0.0
+python_dateutil==2.8.2
+Requests==2.31.0
+sqlmodel==0.0.8
+sendgrid==6.10.0
+pymsteams==0.2.2
+boto3==1.26.151
+psycopg2-binary==2.9.1
+
