@@ -93,7 +93,7 @@ with col2:
     hn_id = st.text_input('HN_number : [xx,xxx]', )
     col21,col22 = st.columns(2)
     with col21:
-        hn_name = st.text_input('ชื่อ', '')
+        hn_name = st.text_input('ชื่อ', ' ')
     with col22:
         hn_lastname = st.text_input('นามสกุล', '')
     

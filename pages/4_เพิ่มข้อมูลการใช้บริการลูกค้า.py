@@ -119,7 +119,7 @@ def add_used_record2db():
         
             #if st.button('ค้นหาข้อมูลลูกค้า'):
             customer_df = customer_profile_df[(customer_profile_df['hn'].astype('string').str.contains(hn_id)) & (customer_profile_df['name'].str.contains(hn_name))]
-            customer_df = customer_df[(customer_profile_df['last_name'].str.contains(hn_lastname))]
+            customer_df = customer_df[(customer_profile_df['last_name'].fillna('Not define').str.contains(hn_lastname))]
             st.dataframe(customer_df.head(5))
 
             with col2:
