@@ -56,7 +56,7 @@ customer_product_record_df.drop_duplicates(inplace=True)
 
 # Customer Profile Load
 try:
-    customer_profile_df = pd.read_csv(f"./database/customer_profile/customer_profile_{date.today().strftime('%Y-%m')}_data.csv")
+    customer_profile_df = pd.read_csv(f"./database/customer_profile/customer_profile_{date.today().strftime('%Y-%d')}_data.csv")
     st.success('Load from lasted updated file')
 except:
     customer_profile_df = pd.read_csv(f"./database/customer_profile/customer_profile_data.csv")
@@ -65,7 +65,7 @@ customer_profile_df.drop_duplicates(inplace=True)
 
 # Product
 try:
-    product_category_df = pd.read_csv(f"./database/product_category/product_category_{date.today().strftime('%Y-%m')}_data.csv")
+    product_category_df = pd.read_csv(f"./database/product_category/product_category_{date.today().strftime('%Y-%d')}_data.csv")
 except:
     product_category_df = pd.read_csv(f"./database/product_category/product_category_data.csv")
 
@@ -99,7 +99,7 @@ with col2:
     
     # if st.button('ค้นหาข้อมูลลูกค้า'):
     customer_df = customer_profile_df[(customer_profile_df['hn'].astype('string').str.contains(hn_id)) & (customer_profile_df['name'].str.contains(hn_name))]
-    customer_df = customer_df[(customer_profile_df['last_name'].str.contains(hn_lastname))]
+    customer_df = customer_df[(customer_profile_df['last_name'].fillna('Not define').str.contains(hn_lastname))]
 st.dataframe(customer_df.head(5))
      
 with st.container():
@@ -127,7 +127,7 @@ col = st.columns(3)[1]  # use an odd number and pick the middle element
 if col.button('ยืนยันการเพิ่มข้อมูลลูกค้า'):
     customer_product_record_df = pd.concat([customer_product_record_df,pd.DataFrame.from_dict(service_row,orient='index').T], axis=0, ignore_index=True)
     customer_product_record_df.drop_duplicates(inplace = True)
-    customer_product_record_df.to_csv(f"./database/customer_product_record/customer_product_record_{date.today().strftime('%Y-%m')}_data.csv",header = True,index = False, encoding="utf-8-sig")
+    customer_product_record_df.to_csv(f"./database/customer_product_record/customer_product_record_{date.today().strftime('%Y-%d')}_data.csv",header = True,index = False, encoding="utf-8-sig")
     customer_product_record_df.to_csv(f"./database/customer_product_record/customer_product_record_data.csv",header = True,index = False, encoding="utf-8-sig")
     st.success('การเพิ่มข้อมูลเสร็จสมบูรณ์')
     st.balloons()
@@ -137,8 +137,8 @@ st.title('รายการการซื้อบริการทั้ง�
 st.write(time.strftime('%X - %x'))
 edited_df = st.data_editor(customer_product_record_df.sort_values('buy_dt',ascending=False), height=500,width=1100)
 if st.button('บันทึกการเปลี่ยนแปลง'):
-    edited_df.to_csv(f"./database/customer_product_record/customer_product_record_{date.today().strftime('%Y-%m')}_data.csv",header = True,index = False,encoding="utf-8-sig")
-    edited_df.to_csv(f"./database/customer_product_record/customer_product_record_data.csv",header = True,index = False,encoding="utf-8-sig"
-    st.success('บึนทึกเสร็จสมบูรณ์')
+    edited_df.to_csv(f"./database/customer_product_record/customer_product_record_{date.today().strftime('%Y-%d')}_data.csv",header = True,index = False,encoding="utf-8-sig")
+    edited_df.to_csv(f"./database/customer_product_record/customer_product_record_data.csv",header = True,index = False,encoding="utf-8-sig")
+    st.success('บันทึกเสร็จสมบูรณ์')
     st.balloons()
    
