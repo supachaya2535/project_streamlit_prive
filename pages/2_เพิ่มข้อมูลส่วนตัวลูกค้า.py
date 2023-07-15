@@ -7,11 +7,11 @@ from datetime import date
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from utils_prive import  get_customer_profile, save_customer_profile
-
+import utils_prive
 
 ###  Main
 st.set_page_config(layout="wide")
-
+status = utils_prive.choos_status()
 st.title('เพิ่มข้อมูลส่วนตัวลูกค้า')
 today =  date(2023,5,22)#date.today()
 st.write(time.strftime('%X - %x'))
@@ -83,7 +83,7 @@ if st.button('ยืนยันเพิ่มข้อมูลลูกค้
             'sex': hn_sex,
             'tel' : hn_tel,
             'dob' : hn_dob,
-            'status' : 'test',
+            'status' : status,
             'email': hn_email, 
             'house_num' : hn_housenum,
             'building': hn_building, 

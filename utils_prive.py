@@ -17,6 +17,11 @@ PROJECT = 'project_streamlit_prive'
 def hex_format(r,g,b):
     return '#{:02X}{:02X}{:02X}'.format(r,g,b)
 
+def choos_status():
+    option = st.sidebar.selectbox(
+    'Input type',
+    ('staff', 'test'))
+    return
 #SQL
 def postgresql_connect():
     # specify user/password/where the database is

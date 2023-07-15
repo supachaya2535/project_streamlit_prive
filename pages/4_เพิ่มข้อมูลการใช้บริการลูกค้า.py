@@ -57,7 +57,7 @@ def add_used_record2db():
     product_category_df = utils_prive.get_product_category()
     customer_profile_df = utils_prive.get_customer_profile()
     customer_used_record_df = utils_prive.get_customer_used_record()
-
+    status = utils_prive.choos_status()
     col1,_, col2 = st.columns([0.5,0.1,0.5])
     hn_id = '1'
     found_customer = False
@@ -123,7 +123,7 @@ def add_used_record2db():
     used_row = {
         'hn' : hn_id,
         'item_name' : None,
-        'status' : 'test',
+        'status' : status,
         'duration': None,
         'duration_unit': None,
         'next_date': None,
@@ -134,7 +134,7 @@ def add_used_record2db():
         used_row = {
             'hn' : int(hn_id),
             'item_name' : item_name,
-            'status' : 'test',
+            'status' : status,
             'duration': int(item_df['duration']),
             'duration_unit': item_df['duration_unit'],
             'next_date': next_dt.strftime('%Y-%m-%d'),
@@ -145,7 +145,7 @@ def add_used_record2db():
         used_row = {
             'hn' : int(hn_id),
             'item_name' : item_name,
-            'status' : 'test',
+            'status' : status,
             'duration': 0,
             'duration_unit': '-',
             'next_date': None,

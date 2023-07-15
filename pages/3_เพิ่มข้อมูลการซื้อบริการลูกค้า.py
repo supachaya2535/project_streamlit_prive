@@ -47,6 +47,7 @@ customer_profile_df = utils_prive.get_customer_profile()
 product_category_df = utils_prive.get_product_category()
 
 st.divider()
+status = utils_prive.choos_status()
 
 hn_id = '57035'
 product_list = 'ยังไม่ได้ระบุ'
@@ -91,7 +92,7 @@ if customer_df.shape[0]>0:
 service_row = {
                 'hn'    : int(hn_id),
                 'item_name' : item_name,
-                'status' : 'test',
+                'status' : status,
                 'num_fullcourse' : int(full_couse_num),
                 'expired_dt': expired_dt.strftime('%Y-%m-%d'), 
                 'buy_dt': date.today().strftime('%Y-%m-%d'),
