@@ -5,7 +5,8 @@ import numpy as np
 from datetime import date
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
-from utils_prive import load_customer_used_record_data
+
+import utils_prive
 
 def get_customer_used_record():
     # Customer used Record
@@ -25,9 +26,6 @@ def get_customer_profile():
         customer_profile_df = pd.read_csv(f"./database/customer_profile/customer_profile_data.csv")
         # st.warning('No updated file today...')
     return customer_profile_df.drop_duplicates()
-
-def hex_format(r,g,b):
-    return '#{:02X}{:02X}{:02X}'.format(r,g,b)
 
 def rename_to_display(df):
     df.rename(columns={ 'hn': 'หมายเลข HN',
@@ -61,8 +59,8 @@ c1,c2 = st.columns(2)
 with c1: strt_dt = st.date_input("วันที่เริ่มต้น", date.today())
 with c2: end_dt = st.date_input("วันที่สิ้นสุด", date.today()+relativedelta(months=1))
 
-next_df = get_customer_used_record()
-customer_profile_df = get_customer_profile()
+next_df = utils_prive.get_customer_used_record()
+customer_profile_df = utils_prive.get_customer_profile()
 
 next_df.sort_values('next_date',ascending=False,inplace=True)
 
@@ -78,9 +76,8 @@ next_df = rename_to_display(join_df)
 
 st.divider()
 st.title('รายชื่อลูกค้าที่ต้องทำนัดทั้งหมด')
+
 edited_df = st.data_editor(next_df.sort_values('วันที่นัดครั้งถัดไป',ascending=False), height=500,width=1100)
 if st.button('บันทึกการเปลี่ยนแปลง'):
     edited_df = rename_to_save(edited_df)
-    edited_df.to_csv(f"./database/customer_used_record/customer_used_record_{date.today().strftime('%Y-%m')}_data.csv",header = True,index = False, encoding="utf-8-sig")
-    edited_df.to_csv(f"./database/customer_used_record/customer_used_record_data.csv",header = True,index = False,encoding="utf-8-sig")
-
+    utils_prive.save_customer_used_record(edited_df)

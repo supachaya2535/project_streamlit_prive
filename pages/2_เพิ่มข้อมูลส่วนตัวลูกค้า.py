@@ -6,23 +6,8 @@ import time
 from datetime import date
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
-from utils_prive import  creat_new_directory
+from utils_prive import  get_customer_profile, save_customer_profile
 
-
-def hex_format(r,g,b):
-    return '#{:02X}{:02X}{:02X}'.format(r,g,b)
-
-def get_customer_profile():
-    # Customer Profile Load
-    try:
-        customer_profile_df = pd.read_csv(f"./database/customer_profile/customer_profile_{date.today().strftime('%Y-%d')}_data.csv")
-        st.success('Load from lasted updated file')
-    except:
-        customer_profile_df = pd.read_csv(f"./database/customer_profile/customer_profile_data.csv")
-        # customer_profile_df['sex'] = ''
-        st.warning('No updated file today...')
-
-    return customer_profile_df.drop_duplicates()
 
 ###  Main
 st.set_page_config(layout="wide")
@@ -30,15 +15,11 @@ st.set_page_config(layout="wide")
 st.title('เพิ่มข้อมูลส่วนตัวลูกค้า')
 today =  date(2023,5,22)#date.today()
 st.write(time.strftime('%X - %x'))
-# customer_record_df = load_customer_profile_data()
-# creat_new_directory("./database/customer_profile/")
 
 customer_profile_df = get_customer_profile()
-
 st.dataframe(customer_profile_df)
 
 max_hn = int(customer_profile_df['hn'].max())
-
 with st.container():
     st.subheader(f'กรอกข้อมูลสำหรับลูกค้าใหม่')
     col1 ,col2 = st.columns(2)
@@ -57,7 +38,7 @@ with st.container():
 
     col21, col22 ,col23 = st.columns([0.3,0.4,0.6])  
     with col21:
-        hn_dob = st.date_input("วันเกิด (ค.ศ.)", date(1992, 7, 6))
+        hn_dob = st.date_input("วันเกิด (ค.ศ.)", date(999, 9, 9))
     with col22: 
         hn_tel = st.text_input('เบอร์โทร', '')
     with col23:
@@ -130,8 +111,7 @@ if st.button('ยืนยันเพิ่มข้อมูลลูกค้
         hn_df = pd.DataFrame.from_dict(hn_row,orient='index').T
         customer_profile_df = pd.concat([customer_profile_df,hn_df],axis=0, ignore_index=True)
         st.dataframe(customer_profile_df.sort_values('hn',ascending=False))
-        customer_profile_df.to_csv(f"./database/customer_profile/customer_profile_{date.today().strftime('%Y-%d')}_data.csv",header = True,index = False, encoding="utf-8-sig")
-        customer_profile_df.to_csv(f"./database/customer_profile/customer_profile_data.csv",header = True,index = False, encoding="utf-8-sig")
+        save_customer_profile(customer_profile_df)
         st.success("เพิ่มข้อมูลสำเร็จ")
         st.balloons()
         done_flag = False
@@ -139,11 +119,9 @@ if st.button('ยืนยันเพิ่มข้อมูลลูกค้
 st.divider()
 st.header('ลูกค้าทั้งหมด (แก้ไขได้)')
 st.write(time.strftime('%X - %x'))
-customer_profile_df = get_customer_profile()
-
 with st.container():
+    customer_profile_df = get_customer_profile()
     edited_df = st.data_editor(customer_profile_df.sort_values('hn',ascending=False), height=1000)
     if st.button('บันทึกการเปลี่ยนแปลง'):
-        edited_df.to_csv(f"./database/customer_profile/customer_profile_{date.today().strftime('%Y-%d')}_data.csv",header = True,index = False, encoding="utf-8-sig")
-        edited_df.to_csv(f"./database/customer_profile/customer_profile_data.csv",header = True,index = False, encoding="utf-8-sig")
+        save_customer_profile(edited_df)
         st.balloons()
