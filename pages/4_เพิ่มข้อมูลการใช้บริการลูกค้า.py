@@ -6,7 +6,8 @@ import time
 from datetime import date
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
-from utils_prive import load_customer_used_record_data
+import utils_prive
+from utils_prive import save_new_used_record2db
 
 def rename_to_display(df):
     df.rename(columns={ 'hn': 'หมายเลข HN',
@@ -32,47 +33,6 @@ def rename_to_save(df):
                     },inplace=True)
     return df
 
-def get_customer_used_record():
-    # Customer used Record
-    try:
-        customer_used_record_df = pd.read_csv(f"./database/customer_used_record/customer_used_record_{date.today().strftime('%Y-%m')}_data.csv")
-    except:
-        customer_used_record_df = pd.read_csv(f"./database/customer_used_record/customer_used_record_data.csv")
-        customer_used_record_df['status'] = 'excel'
-    return customer_used_record_df.drop_duplicates()
-
-def get_customer_product_record():
-    # Customer Product Record
-    try:
-        customer_product_record_df = pd.read_csv(f"./database/customer_product_record/customer_product_record_{date.today().strftime('%Y-%m')}_data.csv")
-    except:
-        customer_product_record_df = pd.read_csv(f"./database/customer_product_record/customer_product_record_data.csv")
-    customer_product_record_df['active_status'] = True
-    activ = customer_product_record_df['expired_dt'] < str(date.today())
-    customer_product_record_df.loc[activ,'active_status'] = False
-    return customer_product_record_df.drop_duplicates()
-
-def get_customer_profile():
-    # Customer Profile Load
-    try:
-        customer_profile_df = pd.read_csv(f"./database/customer_profile/customer_profile_{date.today().strftime('%Y-%m')}_data.csv")
-        # st.success('Load from lasted updated file')
-    except:
-        customer_profile_df = pd.read_csv(f"./database/customer_profile/customer_profile_data.csv")
-        # st.warning('No updated file today...')
-    return customer_profile_df.drop_duplicates()
-
-def get_product_category():
-    # Product
-    try:
-        product_category_df = pd.read_csv(f"./database/product_category/product_category_{date.today().strftime('%Y-%m')}_data.csv")
-    except:
-        product_category_df = pd.read_csv(f"./database/product_category/product_category_data.csv")
-    return product_category_df.drop_duplicates()
-
-def hex_format(r,g,b):
-    return '#{:02X}{:02X}{:02X}'.format(r,g,b)
-
 def choose_service(df):
     active_df = df[df['active_status']]
     curc_list = list(active_df.groupby('item_name').count().index) 
@@ -92,18 +52,12 @@ def display_service( item_name, used_couse_num):
     st.markdown(f"บริการที่ลูกค้าใช้ : :green[{item_name}]")
     st.markdown(f"จำนวนที่ใช้ : :green[{used_couse_num}]")
 
-def save_new_used_record2db(used_row):
-    customer_used_record_df = get_customer_used_record()
-    customer_used_record_df = customer_used_record_df.append(used_row,ignore_index=True).sort_values('next_date',ascending=False)
-    customer_used_record_df.to_csv(f"./database/customer_used_record/customer_used_record_{date.today()}_data.csv",header = True,index = False,encoding="utf-8-sig")
-    customer_used_record_df.to_csv(f"./database/customer_used_record/customer_used_record_data.csv",header = True,index = False,encoding="utf-8-sig")
-        
 def add_used_record2db():
-    customer_product_record_df = get_customer_product_record()
-    product_category_df = get_product_category()
-    customer_profile_df = get_customer_profile()
-    customer_used_record_df = get_customer_used_record()
-
+    customer_product_record_df = utils_prive.get_customer_product_record()
+    product_category_df = utils_prive.get_product_category()
+    customer_profile_df = utils_prive.get_customer_profile()
+    customer_used_record_df = utils_prive.get_customer_used_record()
+    status = utils_prive.choos_status()
     col1,_, col2 = st.columns([0.5,0.1,0.5])
     hn_id = '1'
     found_customer = False
@@ -118,8 +72,8 @@ def add_used_record2db():
                 hn_lastname = st.text_input('นามสกุล', '')
         
             #if st.button('ค้นหาข้อมูลลูกค้า'):
-            customer_df = customer_profile_df[(customer_profile_df['hn'].astype('string').str.contains(hn_id)) & (customer_profile_df['name'].str.contains(hn_name))]
-            customer_df = customer_df[(customer_profile_df['last_name'].fillna('Not define').str.contains(hn_lastname))]
+            customer_df = customer_profile_df[(customer_profile_df['hn'].astype('string').str.contains(hn_id)) & (customer_profile_df['name'].str.lower().str.contains(hn_name.lower()))]
+            customer_df = customer_df[(customer_profile_df['last_name'].fillna('Not define').str.lower().str.contains(hn_lastname.lower()))]
             st.dataframe(customer_df.head(5))
 
             with col2:
@@ -169,7 +123,7 @@ def add_used_record2db():
     used_row = {
         'hn' : hn_id,
         'item_name' : None,
-        'status' : 'test',
+        'status' : status,
         'duration': None,
         'duration_unit': None,
         'next_date': None,
@@ -180,7 +134,7 @@ def add_used_record2db():
         used_row = {
             'hn' : int(hn_id),
             'item_name' : item_name,
-            'status' : 'test',
+            'status' : status,
             'duration': int(item_df['duration']),
             'duration_unit': item_df['duration_unit'],
             'next_date': next_dt.strftime('%Y-%m-%d'),
@@ -191,7 +145,7 @@ def add_used_record2db():
         used_row = {
             'hn' : int(hn_id),
             'item_name' : item_name,
-            'status' : 'test',
+            'status' : status,
             'duration': 0,
             'duration_unit': '-',
             'next_date': None,
@@ -203,8 +157,7 @@ def add_used_record2db():
         if item_name != None :
             st.dataframe(pd.DataFrame.from_dict(used_row,orient='index').T)
             customer_used_record_df = pd.concat([customer_used_record_df,pd.DataFrame.from_dict(used_row,orient='index').T],axis=0, ignore_index=True)
-            customer_used_record_df.to_csv(f"./database/customer_used_record/customer_used_record_{date.today().strftime('%Y-%m')}_data.csv",header = True,index = False,encoding="utf-8-sig")
-            customer_used_record_df.to_csv(f"./database/customer_used_record/customer_used_record_data.csv",header = True,index = False,encoding="utf-8-sig")
+            utils_prive.save_customer_used_record(customer_used_record_df)
             st.balloons()
         else:
             st.write('ข้อมูลไม่ครบถ้วน')
@@ -214,12 +167,12 @@ def add_used_record2db():
         st.title('รายการใช้งานทั้งหมด (แก้ไขได้)')
         st.write(time.strftime('%X - %x'))
 
+        customer_used_record_df = utils_prive.get_customer_used_record()
         customer_used_record_df = rename_to_display(customer_used_record_df)
         edited_df = st.data_editor(customer_used_record_df.sort_values('วันที่นัดครั้งถัดไป',ascending=False), height=1000,width=1100)
         if st.button('บันทึกการเปลี่ยนแปลง'):
             edited_df = rename_to_save(edited_df)
-            edited_df.to_csv(f"./database/customer_used_record/customer_used_record_{date.today().strftime('%Y-%m')}_data.csv",header = True,index = False,encoding="utf-8-sig")
-            edited_df.to_csv(f"./database/customer_used_record/customer_used_record_data.csv",header = True,index = False,encoding="utf-8-sig")
+            utils_prive.save_customer_used_record(edited_df)
 
     return 1
 

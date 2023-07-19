@@ -9,8 +9,6 @@ st.write("# Welcome to PRIVE 👋")
 
 st.markdown(
     """
-    created by Supachaya Prathan
-
-    
+    updated as 15 July 2023
 """
 )
