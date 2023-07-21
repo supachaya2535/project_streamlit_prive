@@ -59,20 +59,19 @@ c1,c2 = st.columns(2)
 with c1: strt_dt = st.date_input("วันที่เริ่มต้น", date.today())
 with c2: end_dt = st.date_input("วันที่สิ้นสุด", date.today()+relativedelta(months=1))
 
+st.text(f"{strt_dt}:{end_dt}")
+
 next_df = utils_prive.get_customer_used_record()
-customer_profile_df = utils_prive.get_customer_profile()
 
 next_df.sort_values('next_date',ascending=False,inplace=True)
 
 next_df.drop_duplicates(ignore_index=True, subset = ['hn','item_name'], keep = 'first',inplace=True)
 
-join_df = next_df.merge(customer_profile_df[['hn','name','last_name','tel','dob']].drop_duplicates(),on=['hn'],how = 'left')
-
-range_df = join_df[(join_df['next_date'] >= strt_dt.strftime('%Y-%m-%d')) & (join_df['next_date'] <= end_dt.strftime('%Y-%m-%d'))]
+range_df = next_df[(next_df['next_date'].astype(str) >= strt_dt.strftime('%Y-%m-%d')) & (next_df['next_date'].astype(str) <= end_dt.strftime('%Y-%m-%d'))]
 
 st.dataframe(rename_to_display(range_df), width=1100)
 
-next_df = rename_to_display(join_df)
+next_df = rename_to_display(next_df)
 
 st.divider()
 st.title('รายชื่อลูกค้าที่ต้องทำนัดทั้งหมด')
