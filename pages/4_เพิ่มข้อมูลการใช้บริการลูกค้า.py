@@ -91,6 +91,7 @@ def add_used_record2db():
         with col1:
             if (found_customer) & (hn_id!=None):
                 customer_product_df = customer_product_record_df[customer_product_record_df['hn'] == int(hn_id)]
+                txn_dt = st.date_input("วันที่ซื้อบริการ (ค.ศ.)", date.today())
                 item_name = choose_service(customer_product_df)
                 
             if item_name != None:
@@ -128,7 +129,7 @@ def add_used_record2db():
         'duration_unit': None,
         'next_date': None,
         'num_course' : None,
-        'txn_date': date.today().strftime('%Y-%m-%d')
+        'txn_date': txn_dt.strftime('%Y-%m-%d')
     }
     if found_item:  
         used_row = {
@@ -139,7 +140,7 @@ def add_used_record2db():
             'duration_unit': item_df['duration_unit'],
             'next_date': next_dt.strftime('%Y-%m-%d'),
             'num_course' : used_couse_num,
-            'txn_date': date.today().strftime('%Y-%m-%d')
+            'txn_date': txn_dt.strftime('%Y-%m-%d')
         }
     else:
         used_row = {
@@ -150,7 +151,7 @@ def add_used_record2db():
             'duration_unit': '-',
             'next_date': None,
             'num_course' : None,
-            'txn_date': date.today().strftime('%Y-%m-%d')
+            'txn_date': txn_dt.strftime('%Y-%m-%d')
         }
     
     if st.button('ยืนยันเพิ่มข้อมูล'):
