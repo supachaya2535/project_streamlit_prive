@@ -117,7 +117,7 @@ if st.button('ยืนยันเพิ่มข้อมูลลูกค้
         done_flag = False
                         
 st.divider()
-st.header('ลูกค้าทั้งหมด (แก้ไขได้)')
+st.header('ลูกค้าทั้งหมด (แก้ไขได้) : วันที่ dd-mm-yyyy')
 st.write(time.strftime('%X - %x'))
 with st.container():
     customer_profile_df = get_customer_profile()

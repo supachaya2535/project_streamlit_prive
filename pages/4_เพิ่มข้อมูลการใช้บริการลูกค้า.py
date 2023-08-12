@@ -58,7 +58,7 @@ def add_used_record2db():
     customer_profile_df = utils_prive.get_customer_profile()
     customer_used_record_df = utils_prive.get_customer_used_record()
     status = utils_prive.choos_status()
-    col1,_, col2 = st.columns([0.5,0.1,0.5])
+    col1,_, col2 = st.columns([0.5,0.1,0.3])
     hn_id = '1'
     found_customer = False
     found_item = False
@@ -91,7 +91,7 @@ def add_used_record2db():
         with col1:
             if (found_customer) & (hn_id!=None):
                 customer_product_df = customer_product_record_df[customer_product_record_df['hn'] == int(hn_id)]
-                txn_dt = st.date_input("วันที่ซื้อบริการ (ค.ศ.)", date.today())
+                txn_dt = st.date_input("วันที่ซื้อบริการ (ค.ศ.)", date.today()).strftime('%Y-%m-%d')
                 item_name = choose_service(customer_product_df)
                 
             if item_name != None:
