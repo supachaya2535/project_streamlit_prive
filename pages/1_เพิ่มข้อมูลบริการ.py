@@ -33,7 +33,7 @@ with st.container():
             'item_name'    : item_name,
             'duration' : duration,
             'duration_unit' : duration_unit,
-            'start_dt': str(date.today()),
+            'start_dt': date.today(),
             'active_status': True
         }
         item_df = pd.DataFrame.from_dict(item,orient='index').T

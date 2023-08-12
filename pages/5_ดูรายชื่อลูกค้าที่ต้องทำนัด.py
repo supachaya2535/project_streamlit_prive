@@ -62,6 +62,7 @@ with c2: end_dt = st.date_input("วันที่สิ้นสุด", date.
 st.text(f"{strt_dt}:{end_dt}")
 
 next_df = utils_prive.get_customer_used_record()
+#next_df['next_date'] = pd.to_datetime(next_df['next_date'], format = '%Y-%m-%d').strftime('%Y/%m/%d')
 
 next_df.sort_values('next_date',ascending=False,inplace=True)
 

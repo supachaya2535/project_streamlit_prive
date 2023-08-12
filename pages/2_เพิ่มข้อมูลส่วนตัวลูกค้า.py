@@ -38,7 +38,7 @@ with st.container():
 
     col21, col22 ,col23 = st.columns([0.3,0.4,0.6])  
     with col21:
-        hn_dob = st.date_input("วันเกิด (ค.ศ.)", date(999, 9, 9),format = 'YYYY/mm/dd' )
+        hn_dob = st.date_input("วันเกิด (ค.ศ.)", date(999, 9, 9) )
     with col22: 
         hn_tel = st.text_input('เบอร์โทร', '')
     with col23:
@@ -82,7 +82,7 @@ if st.button('ยืนยันเพิ่มข้อมูลลูกค้
             'last_name' : hn_last_name,
             'sex': hn_sex,
             'tel' : hn_tel,
-            'dob' : hn_dob,
+            'dob' : hn_dob.strftime('%Y-%m-%d'),
             'status' : status,
             'email': hn_email, 
             'house_num' : hn_housenum,
@@ -92,7 +92,7 @@ if st.button('ยืนยันเพิ่มข้อมูลลูกค้
             'district' :hn_district, 
             'province': hn_province, 
             'zip_code' : hn_zip,
-            'application_dt': date.today()
+            'application_dt': date.today().strftime('%Y-%m-%d')
         }
         
         st.markdown(f"หมายเลข HN : **:green[{hn_id}]**")
@@ -117,7 +117,7 @@ if st.button('ยืนยันเพิ่มข้อมูลลูกค้
         done_flag = False
                         
 st.divider()
-st.header('ลูกค้าทั้งหมด (แก้ไขได้) : วันที่ yyyy/mm/dd')
+st.header('ลูกค้าทั้งหมด (แก้ไขได้) : วันที่ yyyy-mm-dd')
 st.write(time.strftime('%X - %x'))
 with st.container():
     customer_profile_df = get_customer_profile()
