@@ -38,7 +38,7 @@ with st.container():
 
     col21, col22 ,col23 = st.columns([0.3,0.4,0.6])  
     with col21:
-        hn_dob = st.date_input("วันเกิด (ค.ศ.)", date(999, 9, 9))
+        hn_dob = st.date_input("วันเกิด (ค.ศ.)", date(999, 9, 9),format = 'YYYY/mm/dd' )
     with col22: 
         hn_tel = st.text_input('เบอร์โทร', '')
     with col23:
@@ -117,7 +117,7 @@ if st.button('ยืนยันเพิ่มข้อมูลลูกค้
         done_flag = False
                         
 st.divider()
-st.header('ลูกค้าทั้งหมด (แก้ไขได้) : วันที่ dd-mm-yyyy')
+st.header('ลูกค้าทั้งหมด (แก้ไขได้) : วันที่ yyyy/mm/dd')
 st.write(time.strftime('%X - %x'))
 with st.container():
     customer_profile_df = get_customer_profile()

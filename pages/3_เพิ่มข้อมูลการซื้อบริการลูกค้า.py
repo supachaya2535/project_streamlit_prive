@@ -62,8 +62,8 @@ with col1:
     with col11:
         full_couse_num  = st.text_input('จำนวน Couse ทั้งหมดที่ลูกค้าได้รับ (ครั้ง)', 1)
     with col12:
-        buy_dt = st.date_input("วันที่ซื้อบริการ (ค.ศ.)", date.today()).strftime('%Y-%m-%d')
-        expired_dt = st.date_input("วันหมดอายุ (ค.ศ.)", buy_dt+relativedelta(months=36)).strftime('%Y-%m-%d')
+        buy_dt = st.date_input("วันที่ซื้อบริการ (ค.ศ.)", date.today(),format = 'YYYY/mm/dd')
+        expired_dt = st.date_input("วันหมดอายุ (ค.ศ.)", buy_dt+relativedelta(months=36))
 st.divider()
 
 with col2:
@@ -95,8 +95,8 @@ service_row = {
                 'item_name' : item_name,
                 'status' : status,
                 'num_fullcourse' : int(full_couse_num),
-                'expired_dt': expired_dt.strftime('%Y-%m-%d'), 
-                'buy_dt': buy_dt.strftime('%Y-%m-%d'),
+                'expired_dt': expired_dt, 
+                'buy_dt': buy_dt.strftime('%Y/%m/%d'),
                 'active_status': True
             }
 
