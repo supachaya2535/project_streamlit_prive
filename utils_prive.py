@@ -86,7 +86,6 @@ def creat_new_directory(prefix_path):
 # Get Data 
 def get_product_category():
     product_category_df = pd.read_csv(f"./database/product_category/product_category_data.csv")
-        
     return product_category_df.drop_duplicates()
 
 def get_customer_profile():
@@ -119,14 +118,14 @@ def save_customer_used_record(customer_used_record_df):
     customer_used_record_df.to_csv(f"./database/customer_used_record/customer_used_record_data.csv",header = True,index = False,encoding="utf-8-sig")
      
 def save_product_category(product_category_df):
-    product_category_df.to_csv(f"./database/product_category/backup/product_category_{date.today().strftime('%Y-%d')}_data.csv",header = True,index = False, encoding="utf-8-sig")
+    product_category_df.to_csv(f"./database/product_category/backup/product_category_{date.today().strftime('%Y-%m-%d')}_data.csv",header = True,index = False, encoding="utf-8-sig")
     product_category_df.to_csv(f"./database/product_category/product_category_data.csv",header = True,index = False, encoding="utf-8-sig")
         
 def save_customer_profile(customer_profile_df):
-    customer_profile_df.sort_values('hn',ascending=False).to_csv(f"./database/customer_profile/backup/customer_profile_{date.today().strftime('%Y-%d')}_data.csv",header = True,index = False, encoding="utf-8-sig")
+    customer_profile_df.sort_values('hn',ascending=False).to_csv(f"./database/customer_profile/backup/customer_profile_{date.today().strftime('%Y-%m-%d')}_data.csv",header = True,index = False, encoding="utf-8-sig")
     customer_profile_df.sort_values('hn',ascending=False).to_csv(f"./database/customer_profile/customer_profile_data.csv",header = True,index = False, encoding="utf-8-sig")
 
 def save_customer_product_record(customer_product_record_df):
-    customer_product_record_df.to_csv(f"./database/customer_product_record/backup/customer_product_record_{date.today().strftime('%Y-%d')}_data.csv",header = True,index = False, encoding="utf-8-sig")
+    customer_product_record_df.to_csv(f"./database/customer_product_record/backup/customer_product_record_{date.today().strftime('%Y-%m-%d')}_data.csv",header = True,index = False, encoding="utf-8-sig")
     customer_product_record_df.to_csv(f"./database/customer_product_record/customer_product_record_data.csv",header = True,index = False, encoding="utf-8-sig")
     

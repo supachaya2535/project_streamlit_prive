@@ -95,8 +95,8 @@ service_row = {
                 'item_name' : item_name,
                 'status' : status,
                 'num_fullcourse' : int(full_couse_num),
-                'expired_dt': expired_dt, 
-                'buy_dt': buy_dt,
+                'expired_dt': expired_dt.strftime('%Y-%m-%d'), 
+                'buy_dt': buy_dt.strftime('%Y-%m-%d'),
                 'active_status': True
             }
 

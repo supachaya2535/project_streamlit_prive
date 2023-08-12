@@ -91,7 +91,7 @@ def add_used_record2db():
         with col1:
             if (found_customer) & (hn_id!=None):
                 customer_product_df = customer_product_record_df[customer_product_record_df['hn'] == int(hn_id)]
-                txn_dt = st.date_input("วันที่ซื้อบริการ (ค.ศ.)", date.today())
+                txn_dt = st.date_input("วันที่ใช้บริการ (ค.ศ.)", date.today())
                 item_name = choose_service(customer_product_df)
                 
             if item_name != None:
@@ -151,7 +151,7 @@ def add_used_record2db():
             'duration_unit': '-',
             'next_date': None,
             'num_course' : None,
-            'txn_date': txn_dt
+            'txn_date': txn_dt.strftime('%Y-%m-%d')
         }
     
     if st.button('ยืนยันเพิ่มข้อมูล'):
@@ -170,7 +170,8 @@ def add_used_record2db():
 
         customer_used_record_df = utils_prive.get_customer_used_record()
         customer_used_record_df = rename_to_display(customer_used_record_df)
-        edited_df = st.data_editor(customer_used_record_df.sort_values('วันที่นัดครั้งถัดไป',ascending=False), height=1000,width=1100)
+        edited_df = st.data_editor(customer_used_record_df, height=1000,width=1100)
+        #.sort_values('วันที่นัดครั้งถัดไป',ascending=False)
         if st.button('บันทึกการเปลี่ยนแปลง'):
             edited_df = rename_to_save(edited_df)
             utils_prive.save_customer_used_record(edited_df)
