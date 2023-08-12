@@ -169,11 +169,11 @@ def add_used_record2db():
         st.write(time.strftime('%X - %x'))
 
         customer_used_record_df = utils_prive.get_customer_used_record()
-        customer_used_record_df = rename_to_display(customer_used_record_df)
+        #customer_used_record_df = rename_to_display(customer_used_record_df)
         edited_df = st.data_editor(customer_used_record_df, height=1000,width=1100)
         #.sort_values('วันที่นัดครั้งถัดไป',ascending=False)
         if st.button('บันทึกการเปลี่ยนแปลง'):
-            edited_df = rename_to_save(edited_df)
+            #edited_df = rename_to_save(edited_df)
             utils_prive.save_customer_used_record(edited_df)
 
     return 1
