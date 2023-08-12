@@ -67,7 +67,7 @@ def add_used_record2db():
     found_item = False
     with st.container():
         with col1:
-            hn_id = st.text_input('HN_number :', '1')
+            hn_id = st.text_input('HN_number :', '')
             col21,col22 = st.columns(2)
             with col21:
                 hn_name = st.text_input('ชื่อ', '')
