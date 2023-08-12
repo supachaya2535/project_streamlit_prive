@@ -40,13 +40,16 @@ def choose_service(df):
     return genre
 
 def display_cutomer(customer_df):
-    st.markdown(f"หมายเลข HN : **:green[{customer_df['hn']}]**")
-    st.markdown(f"ชื่อ :green[{customer_df['name']}]")
-    st.markdown(f"นามสกุล  :green[{customer_df['last_name']}]")    
-    st.markdown(f"เพศ :green[{customer_df['sex']}]")
-    st.markdown(f"วันเกิด :green[{customer_df['dob']}]")
-    st.markdown(f"เบอร์โทร : :green[{customer_df['tel']}]  ")
-    st.markdown(f"email : :green[{customer_df['email']}]")
+    col1,col2 = st.columns(2)
+    with col1:
+        st.markdown(f"หมายเลข HN : **:green[{customer_df['hn']}]**")
+        st.markdown(f"ชื่อ :green[{customer_df['name']}]")
+        st.markdown(f"นามสกุล  :green[{customer_df['last_name']}]")    
+        st.markdown(f"เพศ :green[{customer_df['sex']}]")
+    with col2:
+        st.markdown(f"วันเกิด :green[{customer_df['dob']}]")
+        st.markdown(f"เบอร์โทร : :green[{customer_df['tel']}]  ")
+        st.markdown(f"email : :green[{customer_df['email']}]")
 
 def display_service( item_name, used_couse_num):
     st.markdown(f"บริการที่ลูกค้าใช้ : :green[{item_name}]")
@@ -58,7 +61,7 @@ def add_used_record2db():
     customer_profile_df = utils_prive.get_customer_profile()
     customer_used_record_df = utils_prive.get_customer_used_record()
     status = utils_prive.choos_status()
-    col1,_, col2 = st.columns([0.5,0.1,0.3])
+    col1,_, col2 = st.columns([0.5,0.01,0.4])
     hn_id = '1'
     found_customer = False
     found_item = False
@@ -92,8 +95,13 @@ def add_used_record2db():
             if (found_customer) & (hn_id!=None):
                 customer_product_df = customer_product_record_df[customer_product_record_df['hn'] == int(hn_id)]
                 txn_dt = st.date_input("วันที่ใช้บริการ (ค.ศ.)", date.today())
+                if customer_product_df.shape[0]>0:
+                    with col2:
+                        st.success('บริการที่ลูกค้าซื้อไว้')
+                        st.dataframe(customer_product_df)
+                        st.divider()
+            
                 item_name = choose_service(customer_product_df)
-                
             if item_name != None:
                 used_couse_num  = st.text_input('จำนวน Couse ทั้งหมดที่ลูกค้าใช้ครั้งนี้', '1')
             else:
@@ -129,7 +137,7 @@ def add_used_record2db():
         'duration_unit': None,
         'next_date': None,
         'num_course' : None,
-        'txn_date': txn_dt
+        'txn_date': txn_dt.strftime('%Y-%m-%d')
     }
     if found_item:  
         used_row = {
@@ -138,9 +146,9 @@ def add_used_record2db():
             'status' : status,
             'duration': int(item_df['duration']),
             'duration_unit': item_df['duration_unit'],
-            'next_date': next_dt,
+            'next_date': next_dt.strftime('%Y-%m-%d'),
             'num_course' : used_couse_num,
-            'txn_date': txn_dt
+            'txn_date': txn_dt.strftime('%Y-%m-%d')
         }
     else:
         used_row = {

@@ -85,22 +85,29 @@ def creat_new_directory(prefix_path):
 
 # Get Data 
 def get_product_category():
-    product_category_df = pd.read_csv(f"./database/product_category/product_category_data.csv")
-    return product_category_df.drop_duplicates()
+    df = pd.read_csv(f"./database/product_category/product_category_data.csv")
+    df['start_dt'] =  pd.to_datetime(df['start_dt'], format='mixed').dt.strftime('%Y-%m-%d')
+    return df.drop_duplicates()
 
 def get_customer_profile():
     # Customer Profile Load
     customer_profile_df = pd.read_csv(f"./database/customer_profile/customer_profile_data.csv")
+    customer_profile_df['dob'] =  pd.to_datetime(customer_profile_df['dob'], format='mixed').dt.strftime('%Y-%m-%d')
+    customer_profile_df['application_dt'] =  pd.to_datetime(customer_profile_df['application_dt'], format='mixed').dt.strftime('%Y-%m-%d')
+
     return customer_profile_df.drop_duplicates()
 
 def get_customer_used_record():
-    customer_used_record_df = pd.read_csv(f"./database/customer_used_record/customer_used_record_data.csv")
-    return customer_used_record_df.drop_duplicates()
+    df = pd.read_csv(f"./database/customer_used_record/customer_used_record_data.csv")
+    df['txn_date'] =  pd.to_datetime(df['txn_date'], format='mixed').dt.strftime('%Y-%m-%d')
+    df['next_date'] =  pd.to_datetime(df['next_date'], format='mixed').dt.strftime('%Y-%m-%d')
+    return df.drop_duplicates()
     
 def get_customer_product_record():
     customer_product_record_df = pd.read_csv(f"./database/customer_product_record/customer_product_record_data.csv")
+    customer_product_record_df['expired_dt'] =  pd.to_datetime(customer_product_record_df['expired_dt'], format='mixed').dt.strftime('%Y-%m-%d')
     customer_product_record_df['active_status'] = True
-    activ = customer_product_record_df['expired_dt'] < str(date.today())
+    activ = customer_product_record_df['expired_dt'] < date.today().strftime('%Y-%m-%d')
     customer_product_record_df.loc[activ,'active_status'] = False
     return customer_product_record_df.drop_duplicates()
 

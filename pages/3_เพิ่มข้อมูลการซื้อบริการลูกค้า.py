@@ -64,7 +64,6 @@ with col1:
     with col12:
         buy_dt = st.date_input("วันที่ซื้อบริการ (ค.ศ.)", date.today())
         expired_dt = st.date_input("วันหมดอายุ (ค.ศ.)", buy_dt+relativedelta(months=36))
-st.divider()
 
 with col2:
     st.subheader(f'ค้นหาข้อมูลลูกค้า')

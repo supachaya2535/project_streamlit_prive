@@ -22,11 +22,15 @@ st.dataframe(customer_profile_df)
 max_hn = int(customer_profile_df['hn'].max())
 with st.container():
     st.subheader(f'กรอกข้อมูลสำหรับลูกค้าใหม่')
+    st.text(f'หมายเลข HN สูงสุดในฐานข้อมูลปัจจุบัน : {max_hn}')
     col1 ,col2 = st.columns(2)
     with col1:
-        st.text(f'หมายเลข HN สูงสุดในฐานข้อมูลปัจจุบัน : {max_hn}')
-    
         hn_id = st.text_input('หมายเลข HN สำหรับลูกค้าใหม่', '')
+        customer_df = customer_profile_df[customer_profile_df['hn'].astype('string') == str(hn_id)]
+    with col2:
+        st.warning(f"ค้นพบ HN {hn_id} ในฐานข้อมูลจำนวน {customer_df.shape[0]} รายการ")
+        st.dataframe(customer_df)
+
     
     col11,col12,col13 = st.columns([0.4,0.4,0.2])
     with col11:
@@ -38,7 +42,7 @@ with st.container():
 
     col21, col22 ,col23 = st.columns([0.3,0.4,0.6])  
     with col21:
-        hn_dob = st.date_input("วันเกิด (ค.ศ.)", date(999, 9, 9) )
+        hn_dob = st.date_input("วันเกิด (ค.ศ.)", date(1900, 9, 9) )
     with col22: 
         hn_tel = st.text_input('เบอร์โทร', '')
     with col23:
@@ -72,9 +76,10 @@ done_flag = False
 summa_flag = False
 hn_row = {}
 if st.button('ยืนยันเพิ่มข้อมูลลูกค้า'):
-    st.balloons()
     if(hn_name == '')|(hn_last_name == ''):
         st.warning('Please fill in required feild [ ชื่อ, นามสกุล, เบอร์โทร]')
+    elif customer_df.shape[0]>0:
+        st.warning(f'หมายเลข HN ซ้ำในระบบ กรุณาตรวจสอบหมายเลข HN ใหม่')
     else:
         hn_row = {
             'hn'    : int(hn_id),
@@ -92,7 +97,8 @@ if st.button('ยืนยันเพิ่มข้อมูลลูกค้
             'district' :hn_district, 
             'province': hn_province, 
             'zip_code' : hn_zip,
-            'application_dt': date.today().strftime('%Y-%m-%d')
+            'application_dt': date.today().strftime('%Y-%m-%d'),
+            'dl_data_dt': date.today()
         }
         
         st.markdown(f"หมายเลข HN : **:green[{hn_id}]**")
