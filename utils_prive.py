@@ -107,7 +107,8 @@ def get_customer_product_record():
     customer_product_record_df = pd.read_csv(f"./database/customer_product_record/customer_product_record_data.csv")
     customer_product_record_df['expired_dt'] =  pd.to_datetime(customer_product_record_df['expired_dt'], format='mixed').dt.strftime('%Y-%m-%d')
     customer_product_record_df['active_status'] = True
-    activ = customer_product_record_df['expired_dt'] < date.today().strftime('%Y-%m-%d')
+    activ =  (customer_product_record_df['expired_dt'] < date.today().strftime('%Y-%m-%d')) & (customer_product_record_df['active_status'])
+
     customer_product_record_df.loc[activ,'active_status'] = False
     return customer_product_record_df.drop_duplicates()
 

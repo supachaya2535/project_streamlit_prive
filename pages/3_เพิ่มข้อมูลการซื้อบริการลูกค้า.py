@@ -77,12 +77,18 @@ with col2:
     # if st.button('ค้นหาข้อมูลลูกค้า'):
     customer_df = customer_profile_df[(customer_profile_df['hn'].astype('string').str.contains(hn_id)) & (customer_profile_df['name'].str.lower().str.contains(hn_name.lower()))]
     customer_df = customer_df[(customer_profile_df['last_name'].fillna('Not define').str.lower().str.contains(hn_lastname.lower()))]
-st.dataframe(customer_df)
+    st.dataframe(customer_df,height=200)
+    
      
 with st.container():
     if customer_df.shape[0]>0:
         customer_df = customer_df.iloc[0,:]
         hn_id = customer_df['hn']
+        hn_product = customer_product_record_df[customer_product_record_df['hn'] == int(hn_id)]
+        if hn_product.shape[0]>0:
+            with col1:
+                st.success('บริการที่ลูกค้าเคยซื้อไว้')
+                st.dataframe(hn_product)
     else:
         st.warning('ไม่พบข้อมูลลูกค้า')
     
