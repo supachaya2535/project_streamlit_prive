@@ -95,7 +95,7 @@ def get_customer_profile():
     customer_profile_df['dob'] =  pd.to_datetime(customer_profile_df['dob'], format='mixed').dt.strftime('%Y-%m-%d')
     customer_profile_df['application_dt'] =  pd.to_datetime(customer_profile_df['application_dt'], format='mixed').dt.strftime('%Y-%m-%d')
 
-    return customer_profile_df.drop_duplicates()
+    return customer_profile_df.drop_duplicates(subset=["hn",'name','last_name'])
 
 def get_customer_used_record():
     df = pd.read_csv(f"./database/customer_used_record/customer_used_record_data.csv")
