@@ -42,7 +42,7 @@ with st.container():
 
     col21, col22 ,col23 = st.columns([0.3,0.4,0.6])  
     with col21:
-        hn_dob = st.date_input("วันเกิด (ค.ศ.)", date(1900, 9, 9) )
+        hn_dob = st.date_input("วันเกิด (ค.ศ.)", date(1900, 9, 9), min_value=date(1900, 9, 9),max_value=date(2200, 12, 31))
     with col22: 
         hn_tel = st.text_input('เบอร์โทร', '')
     with col23:
